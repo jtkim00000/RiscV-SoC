@@ -1,7 +1,7 @@
 class reg_file_item extends uvm_sequence_item;
 
     rand bit write_enable;
-    randc bit [31:0] rs1_addr, rs2_addr, write_addr, 
+    randc bit [31:0] rs1_addr, rs2_addr, write_addr;
     rand bit [31:0] write_data;
     logic [31:0] rs1, rs2;
 

@@ -20,14 +20,14 @@ class reg_file_driver extends uvm_driver #(reg_file_item);
         forever begin
             seq_item_port.get_next_item(tr);
 
-            @(vif.reg_file_cb);
+            @(vif.register_file_cb);
             vif.register_file_cb.write_enable <= tr.write_enable;
             vif.register_file_cb.rs1_addr <= tr.rs1_addr;
             vif.register_file_cb.rs2_addr <= tr.rs2_addr;
             vif.register_file_cb.write_addr <= tr.write_addr;
             vif.register_file_cb.write_data <= tr.write_data;
 
-            @(vif.reg_file_cb);
+            @(vif.register_file_cb);
 
             seq_item_port.item_done();
 

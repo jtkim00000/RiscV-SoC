@@ -8,7 +8,7 @@ class reg_file_coverage extends uvm_subscriber #(reg_file_item);
         bit   [31:0] write_addr,
         bit   [31:0] write_data,
         logic [31:0] rs1,
-        logic [31:0] rs2,
+        logic [31:0] rs2
     );
         option.per_instance = 1;
 

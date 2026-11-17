@@ -8,12 +8,15 @@ module reg_file_tb_top;
     bit clk;
     always #10ns clk = ~clk;
 
-    register_file_if register_file_if0 (clk);
+    register_file_if reg_file_if0 (clk);
     register_file dut0 (reg_file_if0.DUT);
 
     initial begin
-        reg_file_if0.reset      = 1'b1;
+        reg_file_if0.write_enable = 1'b0;
         reg_file_if0.write_data = 32'd0;
+        reg_file_if0.write_addr = 32'd0;
+        reg_file_if0.rs1_addr = 32'd0;
+        reg_file_if0.rs2_addr = 32'd0;
 
         uvm_config_db#(virtual register_file_if.TEST)::set(null, "uvm_test_top.m_top_env.m_agent.m_driver", "vif", reg_file_if0);
 

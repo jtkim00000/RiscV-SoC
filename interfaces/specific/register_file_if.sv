@@ -23,6 +23,6 @@ interface register_file_if(input logic clk);
         input write_enable, rs1_addr, rs2_addr, write_addr, write_data, rs1, rs2;
     endclocking
 
-    modport MONITOR (clocking register_file_cb_m);
+    modport MONITOR (clocking register_file_cbm);
 
 endinterface : register_file_if

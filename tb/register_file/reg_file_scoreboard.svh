@@ -23,22 +23,38 @@ class reg_file_scoreboard extends uvm_scoreboard;
         logic [31:0] write_addr,
         logic [31:0] write_data,
         logic [31:0] rs1_addr,
-        logic [31:0] rs2_addr,
-    ) 
-        static bit [31:0] registers [0:31];
+        logic [31:0] rs2_addr
+    );
+        static logic [31:0] registers [0:31];
 
-        if(write_enable) begin
+        if(write_enable && (write_addr != 0)) begin
             registers[write_addr] <= write_data;
         end
 
-        if(rs1_addr != 32'd0) 
+        if(rs1_addr != 32'd0) begin
             return registers[rs1_addr];
-        else
+        end
+        else if (rs2_addr != 32'd0) begin
             return registers[rs2_addr];
+        end
+
+        return 32'd0;
 
     endfunction : model_register_file
 
     virtual function void write(reg_file_item tr);
+        //two separate reads
+        expected_data_rs1 = model_register_file(1'b0, 32'd0, 32'd0, tr.rs1_addr, 32'd0);
+        expected_data_rs2 = model_register_file(1'b0, 32'd0, 32'd0, 32'd0, tr.rs2_addr);
+
+        if (tr.write_enable && tr.write_addr != 0) begin    // register-fiel write through
+            if (tr.rs1_addr == tr.write_addr)
+                expected_data_rs1 = tr.write_data;
+
+            if (tr.rs2_addr == tr.write_addr)
+                expected_data_rs2 = tr.write_data;
+        end
+
         if (expected_valid) begin
             ++check_count;
 
@@ -55,10 +71,6 @@ class reg_file_scoreboard extends uvm_scoreboard;
 
         // write
         model_register_file(tr.write_enable, tr.write_addr, tr.write_data, 32'd0, 32'd0);
-
-        //two separate reads
-        expected_data_rs1 = model_register_file(1'b0, 32'd0, 32'd0, tr.rs1_addr, 32'd0);
-        expected_data_rs2 = model_register_file(1'b0, 32'd0, 32'd0, 32'd0, tr.rs2_addr);
 
         expected_valid = 1;
     endfunction : write
