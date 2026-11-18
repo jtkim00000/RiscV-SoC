@@ -47,10 +47,10 @@ uvm_test_top               adder_test              -     @343
 UVM_INFO C:/AMDDesignTools/2026.1/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(20867) @ 0: reporter [UVM/COMP/NAMECHECK] This implementation of the component name checks requires DPI to be enabled
 INFO: [USF-XSim-96] XSim completed. Design snapshot 'adder_tb_top_behav' loaded.
 INFO: [USF-XSim-97] XSim simulation ran for 1000ns
-launch_simulation: Time (s): cpu = 00:00:07 ; elapsed = 00:00:45 . Memory (MB): peak = 3244.703 ; gain = 0.000
+launch_simulation: Time (s): cpu = 00:00:04 ; elapsed = 00:00:49 . Memory (MB): peak = 2839.137 ; gain = 0.000
 run all
 UVM_INFO C:/AMDDesignTools/2026.1/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(19968) @ 2421000: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
-UVM_INFO ../../../../../../Github/sv-cpu/tb/adder/adder_scoreboard.svh(48) @ 2421000: uvm_test_top.m_top_env.m_scoreboard [ALU_SUMMARY] Checks: 121, mismatches: 0
+UVM_INFO ../../../../../../Github/RiscV-SoC/tb/adder/adder_scoreboard.svh(48) @ 2421000: uvm_test_top.m_top_env.m_scoreboard [ADDER_SUMMARY] Checks: 121, mismatches: 0
 UVM_INFO C:/AMDDesignTools/2026.1/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(13673) @ 2421000: reporter [UVM/REPORT/SERVER] 
 --- UVM Report Summary ---
 
@@ -60,7 +60,7 @@ UVM_WARNING :    0
 UVM_ERROR :    0
 UVM_FATAL :    0
 ** Report counts by id
-[ALU_SUMMARY]     1
+[ADDER_SUMMARY]     1
 [RNTST]     1
 [TEST_DONE]     1
 [UVM/COMP/NAMECHECK]     1
