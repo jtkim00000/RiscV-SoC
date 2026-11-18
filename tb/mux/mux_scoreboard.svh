@@ -5,7 +5,7 @@ class mux_scoreboard extends uvm_scoreboard;
         super.new(name, parent);
     endfunction : new
 
-    uvm_analysis_imp #(mux_item, mux_scoreboard) ap_imp;
+    uvm_analysis_imp #(mux_item_t, mux_scoreboard) ap_imp;
 
     logic [31:0] expected_data;
     bit          expected_valid;
@@ -21,20 +21,24 @@ class mux_scoreboard extends uvm_scoreboard;
     // Scoreboard Helper Functions
     // ========================================
 
-    function automatic logic [31:0] predict_add(
-        logic [31:0] a, b
-    );
-        return a + b;
+    function automatic logic [31:0] predict_mux(mux_item_t tr);
+        logic [31:0] result;
+
+        for (int i = 0; i < 32; i++) begin
+            result[i] = tr.data_in[tr.sel * 32 + i];
+        end
+
+        return result;
     endfunction
 
-    virtual function void write(mux_item tr);
+    virtual function void write(mux_item_t tr);
         ++check_count;
         
-        expected_data = predict_add(tr.a, tr.b);
+        expected_data = predict_mux(tr);
 
-        if(tr.s !== expected_data) begin
+        if(tr.data_out !== expected_data) begin
             ++mismatch_count;
-            `uvm_error("mux MISMATCH", $sformatf("Expected s=%08h, got %08h", expected_data, tr.s))
+            `uvm_error("mux MISMATCH", $sformatf("Expected s=%08h, got %08h", expected_data, tr.data_out))
         end
     endfunction : write
 

@@ -1,16 +1,28 @@
-class adder_item extends uvm_sequence_item;
+class mux_item #(
+    parameter int unsigned DATA_WIDTH = 32,
+    parameter int unsigned INPUT_WIDTH = 2,
+    parameter int unsigned SELECT_BITS =
+        (INPUT_WIDTH > 1) ? $clog2(INPUT_WIDTH) : 1
+) extends uvm_sequence_item;
     
-    rand bit [31:0] a, b;
-    logic [31:0] s;
+    rand bit [DATA_WIDTH*INPUT_WIDTH-1:0] data_in;
+    rand bit [SELECT_BITS-1:0]            sel;
 
-    `uvm_object_utils_begin(adder_item)
-        `uvm_field_int(a, UVM_ALL_ON);
-        `uvm_field_int(b, UVM_ALL_ON);
-        `uvm_field_int(s, UVM_ALL_ON);
+    logic [DATA_WIDTH-1:0] data_out;
+
+    constraint selection_c {
+        sel < INPUT_WIDTH;
+    }
+
+    `uvm_object_param_utils_begin(
+        mux_item #(DATA_WIDTH, INPUT_WIDTH, SELECT_BITS))
+        `uvm_field_int(data_in,  UVM_ALL_ON)
+        `uvm_field_int(sel,      UVM_ALL_ON)
+        `uvm_field_int(data_out, UVM_ALL_ON)
     `uvm_object_utils_end
 
-    function new(string name = "adder_item");
+    function new(string name = "mux_item");
         super.new(name);
     endfunction : new
 
-endclass : adder_item
+endclass : mux_item

@@ -6,6 +6,12 @@ package mux_tb_pkg;
     `include "uvm_macros.svh"
 
     `include "mux_item.svh"
+
+    typedef mux_item #(
+        .DATA_WIDTH(32),
+        .INPUT_WIDTH(4)
+    ) mux_item_t;
+
     `include "mux_sequence.svh"
     `include "mux_sequencer.svh"
     `include "mux_driver.svh"

@@ -6,7 +6,14 @@ class mux_sequence extends uvm_sequence #(mux_item);
     endfunction : new
 
     virtual task body();
-        req = mux_item::type_id::create("req");
+        typedef mux_item #(
+            .DATA_WIDTH(32),
+            .INPUT_WIDTH(4)
+        ) mux_item_t;
+
+        mux_item_t req;
+
+        req = mux_item_t::type_id::create("req");
         repeat (50) begin
             start_item(req);
             if(!req.randomize())
