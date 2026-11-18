@@ -17,11 +17,11 @@ interface sram_if (input logic clk);
         output read_data
     );
 
-    clocking sram_cb_m @(posedge clk);
+    clocking sram_cbm @(posedge clk);
         default input #1step;
         input write_enable, sz, num_bytes, addr, write_data, read_data;
-    endclocking : sram_cb_m
+    endclocking : sram_cbm
 
-    modport MONITOR (clocking sram_cb_m);
+    modport MONITOR (clocking sram_cbm);
 
 endinterface : sram_if

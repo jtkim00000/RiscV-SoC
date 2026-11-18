@@ -12,7 +12,10 @@ module sram_tb_top;
     sram dut0 (sram_if0.DUT);
 
     initial begin
-        sram_if0.reset      = 1'b1;
+        sram_if0.sz = 1'b0;
+        sram_if0.write_enable = 1'b0;
+        sram_if0.num_bytes = 2'd0;
+        sram_if0.addr = 32'd0;
         sram_if0.write_data = 32'd0;
 
         uvm_config_db#(virtual sram_if.TEST)::set(null, "uvm_test_top.m_top_env.m_agent.m_driver", "vif", sram_if0);
