@@ -3,8 +3,8 @@ package mul_pkg;
     typedef enum logic [2:0] {
         MUL_L   = 3'd0,
         MUL_H   = 3'd1,
-        MUL_HU  = 3'd2,
-        MUL_HSU = 3'd3,
+        MUL_HSU = 3'd2,
+        MUL_HU  = 3'd3,
         DIV     = 3'd4,
         DIV_U   = 3'd5,
         REM     = 3'd6,

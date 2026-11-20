@@ -95,8 +95,8 @@ class mul_scoreboard extends uvm_scoreboard;
         case(tr.sel) 
             MUL_L:    expected_data = predict_mull(tr.rs1, tr.rs2);
             MUL_H:   expected_data = predict_mul_high(tr.rs1, tr.rs2, 1, 1);
-            MUL_HU:  expected_data = predict_mul_high(tr.rs1, tr.rs2, 0, 0);
             MUL_HSU: expected_data = predict_mul_high(tr.rs1, tr.rs2, 1, 0);
+            MUL_HU:  expected_data = predict_mul_high(tr.rs1, tr.rs2, 0, 0);
             DIV:      expected_data = predict_div(tr.rs1, tr.rs2);
             DIV_U:    expected_data = predict_divu(tr.rs1, tr.rs2);
             REM:      expected_data = predict_rem(tr.rs1, tr.rs2);

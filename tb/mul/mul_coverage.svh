@@ -11,8 +11,8 @@ class mul_coverage extends uvm_subscriber #(mul_item);
 
         cp_op: coverpoint sel {
             bins ops[] = {
-                MUL_L, MUL_H, MUL_HU, 
-                MUL_HSU, DIV, DIV_U, 
+                MUL_L, MUL_H, 
+                MUL_HSU, MUL_HU, DIV, DIV_U, 
                 REM, REM_U
             };
         }
