@@ -1,17 +1,17 @@
 interface control_unit_if (input bit clk);
-    logic [31:0] instr,
-    logic reg_en,
-    logic [2:0] regmux,
-    logic alumux1,
-    logic alumux2,
-    logic [3:0] alu_sel,
-    logic [2:0] mul_sel,
-    logic jump,
-    logic br_en,
-    logic jalr,
-    logic we,
-    logic sz,
-    logic [1:0] num_bytes
+    logic [31:0] instr;
+    logic reg_en;
+    logic [2:0] regmux;
+    logic alumux1;
+    logic alumux2;
+    logic [3:0] alu_sel;
+    logic [2:0] mul_sel;
+    logic jump;
+    logic br_en;
+    logic jalr;
+    logic we;
+    logic sz;
+    logic [1:0] num_bytes;
 
     clocking control_unit_cb @(negedge clk);
         default output #0;

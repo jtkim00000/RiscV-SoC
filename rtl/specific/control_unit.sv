@@ -17,7 +17,7 @@ module control_unit (control_unit_if.DUT control_unitif);
                 case(funct7)
                     7'd1: begin // multiply
                         control_unitif.regmux = 3'b101;
-                        mul_sel = funct3;
+                        control_unitif.mul_sel = funct3;
                     end
                     default: begin // alu
                         control_unitif.regmux = 3'b001;
@@ -146,22 +146,22 @@ module control_unit (control_unit_if.DUT control_unitif);
                 control_unitif.reg_en = 1'b1; control_unitif.regmux = 3'b011;
                 control_unitif.alumux1 = 1'b0; control_unitif.alumux2 = 1'b0; control_unitif.alu_sel = 4'b0000; control_unitif.mul_sel = 3'b000;
                 control_unitif.jump = 1'b0; control_unitif.br_en = 1'b0; control_unitif.jalr = 1'b0;
-                control_unitif.we = 1'b0; control_unitif.sz = 1'b0; control_unitif.control_unitif.num_bytes = 2'b00;
+                control_unitif.we = 1'b0; control_unitif.sz = 1'b0; control_unitif.num_bytes = 2'b00;
             end
             7'b0010111: begin //AUIPC
                 control_unitif.reg_en = 1'b1; control_unitif.regmux = 3'b001;
                 control_unitif.alumux1 = 1'b0; control_unitif.alumux2 = 1'b1; control_unitif.alu_sel = 4'b0000; control_unitif.mul_sel = 3'b000;
-                control_unitif.jump = 1'b0; control_unitif.control_unitif.br_en = 1'b0; control_unitif.jalr = 1'b0;
-                control_unitif.we = 1'b0; control_unitif.sz = 1'b0; control_unitif.control_unitif.num_bytes = 2'b00;
+                control_unitif.jump = 1'b0; control_unitif.br_en = 1'b0; control_unitif.jalr = 1'b0;
+                control_unitif.we = 1'b0; control_unitif.sz = 1'b0; control_unitif.num_bytes = 2'b00;
             end
             default: begin
                 control_unitif.reg_en = 1'b0;
                 control_unitif.regmux = 3'b000;
-                control_unitif.control_unitif.alumux1 = 1'b0;
-                control_unitif.control_unitif.alumux2 = 1'b0;
+                control_unitif.alumux1 = 1'b0;
+                control_unitif.alumux2 = 1'b0;
                 control_unitif.alu_sel = 4'b0000; control_unitif.mul_sel = 3'b000;
                 control_unitif.jump = 1'b0;
-                control_unitif.control_unitif.br_en = 1'b0;
+                control_unitif.br_en = 1'b0;
                 control_unitif.jalr = 1'b0;
                 control_unitif.we = 1'b0;
                 control_unitif.sz = 1'b0;
