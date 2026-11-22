@@ -31,7 +31,10 @@ class uartr_monitor extends uvm_monitor;
             tr = uartr_item::type_id::create("tr", this);
 
             tr.reset = vif.uartr_cbm.reset;
-            tr.start = vif.uartr_cbm.rx;
+            tr.rx = vif.uartr_cbm.rx;
+            tr.data = vif.uartr_cbm.data;
+            tr.valid = vif.uartr_cbm.valid;
+            tr.framing_error = vif.uartr_cbm.framing_error;
 
             mon_analysis_port.write(tr);
         end

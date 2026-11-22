@@ -23,4 +23,4 @@ interface uart_receiver_if (input bit clk);
 
     modport MONITOR (clocking uartr_cbm);
 
-endinterface : uart_reciver_if
+endinterface : uart_receiver_if

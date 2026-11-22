@@ -6,7 +6,7 @@ module uartr_tb_top;
     import uartr_tb_pkg::*;
 
     bit clk;
-    always #10ns clk = ~clk;
+    always #5ns clk = ~clk;
 
     uart_receiver_if uartr_if0 (clk);
     uart_receiver dut0 (uartr_if0.DUT);

@@ -5,16 +5,29 @@ class uartr_scoreboard extends uvm_scoreboard;
 
     int unsigned clks_per_bit = 868;
 
-    logic       expected_tx;
-    logic       expected_busy;
     logic [7:0] current_data;
 
-    bit model_valid = 0;
-    bit frame_active = 0;
+    logic [7:0] expected_data;
 
-    int unsigned elapsed_clocks = 0;
+    bit expected_error = 0;
+    logic [7:0] last_good_data;
+
     int unsigned check_count = 0;
     int unsigned mismatch_count = 0;
+
+    typedef enum {
+        REF_IDLE,
+        REF_START,
+        REF_DATA,
+        REF_STOP
+    } reference_state_t;
+
+    reference_state_t reference_state = REF_IDLE;
+
+    int unsigned sample_count = 0;
+    int unsigned bit_index = 0;
+    bit expected_pending = 0;
+    int unsigned decoded_count = 0;
 
     function new(string name, uvm_component parent);
         super.new(name, parent);
@@ -30,87 +43,124 @@ class uartr_scoreboard extends uvm_scoreboard;
             this, "", "clks_per_bit", clks_per_bit
         ));
 
-        if (clks_per_bit == 0)
+        if (clks_per_bit < 2)
             `uvm_fatal("UARTR_CONFIG",
-                       "clks_per_bit must be greater than zero")
+                       "clks_per_bit must be at least 2")
     endfunction : build_phase
 
     virtual function void write(uartr_item tr);
-        int unsigned data_bit_index;
 
-        // Check the prediction made at the previous sampled edge.
-        if (model_valid) begin
-            check_count++;
-
-            if (tr.tx !== expected_tx) begin
-                mismatch_count++;
-                `uvm_error("UARTR_TX_MISMATCH",
-                    $sformatf(
-                        "elapsed=%0d expected tx=%b actual tx=%b",
-                        elapsed_clocks, expected_tx, tr.tx))
-            end
-
-            if (tr.busy !== expected_busy) begin
-                mismatch_count++;
-                `uvm_error("UARTR_BUSY_MISMATCH",
-                    $sformatf(
-                        "elapsed=%0d expected busy=%b actual busy=%b",
-                        elapsed_clocks, expected_busy, tr.busy))
-            end
-        end
-
-        // Predict the outputs after this edge.
         if (tr.reset) begin
-            expected_tx   = 1'b1;
-            expected_busy = 1'b0;
-            current_data  = 8'd0;
-            elapsed_clocks = 0;
-            frame_active = 0;
-            model_valid = 1;
+            reference_state = REF_IDLE;
+            sample_count = 0;
+            bit_index = 0;
+            current_data = 8'd0;
+            expected_pending = 1'b0;
+            return;
         end
-        else if (model_valid) begin
-            if (!frame_active) begin
-                // DUT executes its IDLE behavior.
-                expected_tx   = 1'b1;
-                expected_busy = 1'b0;
-                elapsed_clocks = 0;
-
-                if (tr.start) begin
-                    current_data  = tr.data;
-                    expected_busy = 1'b1;
-                    frame_active  = 1;
-
-                    // tx stays high on the acceptance edge.
-                end
-            end
-            else begin
-                elapsed_clocks++;
-
-                expected_busy = 1'b1;
-
-                if (elapsed_clocks <= clks_per_bit) begin
-                    // Start bit: clocks 1 through N.
-                    expected_tx = 1'b0;
-                end
-                else if (elapsed_clocks <= 9 * clks_per_bit) begin
-                    // Eight data bits, each held for N clocks.
-                    data_bit_index =
-                        ((elapsed_clocks - 1) / clks_per_bit) - 1;
-
-                    expected_tx = current_data[data_bit_index];
+        else begin
+            if (tr.valid == 1'b1 || tr.framing_error == 1'b1) begin
+                if (!expected_pending) begin
+                    mismatch_count++;
+                    `uvm_error("UARTR_UNEXPECTED_RESPONSE",
+                            "Received an event without a pending frame")
                 end
                 else begin
-                    // Stop bit: clocks 9N+1 through 10N.
-                    expected_tx = 1'b1;
-                end
+                    check_count++;
 
-                if (elapsed_clocks == 10 * clks_per_bit) begin
-                    // Stop period ends at the next edge.
-                    // busy remains high for this final stop interval.
-                    // The next update executes IDLE behavior.
-                    frame_active = 0;
+                    if (expected_error) begin
+                        if (tr.valid !== 1'b0 ||
+                            tr.framing_error !== 1'b1) begin
+                            mismatch_count++;
+                            `uvm_error("UARTR_BAD_STOP",
+                                    "Bad stop must produce only framing_error")
+                        end
+
+                        if (tr.data !== last_good_data) begin
+                            mismatch_count++;
+                            `uvm_error("UARTR_DATA_HOLD",
+                                    "Data changed after a bad frame")
+                        end
+                    end
+                    else begin
+                        if (tr.valid !== 1'b1 ||
+                            tr.framing_error !== 1'b0 ||
+                            tr.data !== expected_data) begin
+                            mismatch_count++;
+                            `uvm_error("UARTR_GOOD_FRAME",
+                                    "Good frame produced an incorrect response")
+                        end
+
+                        // Update from the reference, not the DUT's observed data.
+                        last_good_data = expected_data;
+                    end
+
+                    expected_pending = 0;
                 end
             end
+            case(reference_state)
+                REF_IDLE: begin
+                    if (tr.rx == 1'b0) begin
+                        sample_count = 0;
+                        bit_index = 0;
+                        current_data = 8'd0;
+                        reference_state = REF_START;
+                    end
+                end
+                REF_START: begin
+                    if (sample_count == (clks_per_bit / 2) - 1) begin
+                        sample_count = 0;
+
+                        if (tr.rx == 1'b0)
+                            reference_state = REF_DATA;
+                        else
+                            reference_state = REF_IDLE;
+                    end
+                    else begin
+                        sample_count++;
+                    end
+                end
+                REF_DATA: begin
+                    if (sample_count == clks_per_bit - 1) begin
+                        sample_count = 0;
+                        current_data[bit_index] = tr.rx;
+
+                        if (bit_index == 7)
+                            reference_state = REF_STOP;
+                        else
+                            bit_index++;
+                    end
+                    else begin
+                        sample_count++;
+                    end
+                end
+                REF_STOP: begin
+                    if (sample_count == clks_per_bit - 1) begin
+                        sample_count = 0;
+                            
+                        // `uvm_info("UARTR_DECODE",
+                        //     $sformatf("Reference decoded data=%02h stop_ok=%b",
+                        //             current_data, tr.rx),
+                        //     UVM_LOW)
+
+                        if (expected_pending)
+                            `uvm_error("UARTR_MISSING_RESPONSE",
+                                    "Previous frame still awaits a response")
+                                    
+                        expected_error = (tr.rx == 1'b0);
+
+                        expected_data = current_data;
+                        expected_pending = 1;
+                        decoded_count++;
+
+
+                        reference_state = REF_IDLE;
+                    end
+                    else begin
+                        sample_count++;
+                    end
+                end
+            endcase
         end
     endfunction : write
 
@@ -118,9 +168,13 @@ class uartr_scoreboard extends uvm_scoreboard;
         super.report_phase(phase);
 
         `uvm_info("UARTR_SUMMARY",
-            $sformatf("Checks: %0d, mismatches: %0d",
-                      check_count, mismatch_count),
+            $sformatf("Decoded frames: %0d, responses checked: %0d, mismatches: %0d",
+                    decoded_count, check_count, mismatch_count),
             UVM_LOW)
+
+        if (expected_pending)
+            `uvm_error("UARTR_MISSING_RESPONSE",
+                    "Test ended with a decoded frame still awaiting a response")
 
         if (check_count == 0)
             `uvm_error("UARTR_NO_CHECKS",
