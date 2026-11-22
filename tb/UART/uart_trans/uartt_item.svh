@@ -1,16 +1,10 @@
 class uartt_item extends uvm_sequence_item;
 
-    rand bit reset, start;
     rand bit [7:0] data;
+    logic start;
+    logic reset;
     logic tx;
     logic busy;
-    
-    constraint reset_dist_c {
-        reset dist {
-            0 := 95,
-            1 := 5
-        };
-    }
 
     `uvm_object_utils_begin(uartt_item)
         `uvm_field_int(reset, UVM_ALL_ON)

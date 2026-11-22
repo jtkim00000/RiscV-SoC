@@ -3,19 +3,24 @@ class uartt_coverage extends uvm_subscriber #(uartt_item);
 
     covergroup cg_uartt_transaction with function sample(
         bit reset,
-        bit start
+        bit start,
+        bit busy,
+        logic [7:0] data
     );
         option.per_instance = 1;
 
         cp_reset: coverpoint reset {
             bins transmit_cycle  = {0};
-            bins reset_cycle = {1};
+            bins non_reset_cycle = {1};
         }
 
-        cp_start: coverpoint start {
-            bins idle  = {0};
-            bins transmit = {1};
-        }
+        cp_accepted_data: coverpoint data
+            iff (!reset && start && !busy) {
+                bins zero        = {8'h00};
+                bins all_ones    = {8'hFF};
+                bins alternating[] = {8'h55, 8'hAA};
+                bins other       = default;
+            }
 
     endgroup : cg_uartt_transaction
 
@@ -27,6 +32,6 @@ class uartt_coverage extends uvm_subscriber #(uartt_item);
     endfunction : new
 
     virtual function void write(uartt_item t);
-        cg_uartt_transaction.sample(t.reset, t.start);
+        cg_uartt_transaction.sample(t.reset, t.start, t.busy, t.data);
     endfunction : write
 endclass : uartt_coverage

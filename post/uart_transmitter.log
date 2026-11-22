@@ -47,11 +47,11 @@ uvm_test_top               uartt_test              -     @347
 UVM_INFO C:/AMDDesignTools/2026.1/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(20867) @ 0: reporter [UVM/COMP/NAMECHECK] This implementation of the component name checks requires DPI to be enabled
 INFO: [USF-XSim-96] XSim completed. Design snapshot 'uartt_tb_top_behav' loaded.
 INFO: [USF-XSim-97] XSim simulation ran for 1000ns
-launch_simulation: Time (s): cpu = 00:00:04 ; elapsed = 00:00:39 . Memory (MB): peak = 2040.691 ; gain = 0.000
+launch_simulation: Time (s): cpu = 00:00:05 ; elapsed = 00:00:43 . Memory (MB): peak = 2040.691 ; gain = 0.000
 run all
-UVM_INFO C:/AMDDesignTools/2026.1/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(19968) @ 2011000: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
-UVM_INFO ../../../../../../Github/RiscV-SoC/tb/UART/uart_trans/uartt_scoreboard.svh(123) @ 2011000: uvm_test_top.m_top_env.m_scoreboard [UARTT_SUMMARY] Checks: 100, mismatches: 0
-UVM_INFO C:/AMDDesignTools/2026.1/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(13673) @ 2011000: reporter [UVM/REPORT/SERVER] 
+UVM_INFO C:/AMDDesignTools/2026.1/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(19968) @ 8684071000: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
+UVM_INFO ../../../../../../Github/RiscV-SoC/tb/UART/uart_trans/uartt_scoreboard.svh(123) @ 8684071000: uvm_test_top.m_top_env.m_scoreboard [UARTT_SUMMARY] Checks: 434203, mismatches: 0
+UVM_INFO C:/AMDDesignTools/2026.1/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(13673) @ 8684071000: reporter [UVM/REPORT/SERVER] 
 --- UVM Report Summary ---
 
 ** Report counts by severity
@@ -67,4 +67,5 @@ UVM_FATAL :    0
 [UVM/RELNOTES]     1
 [UVMTOP]     1
 
-$finish called at time : 2011 ns : File "C:/AMDDesignTools/2026.1/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv" Line 18699
+$finish called at time : 8684071 ns : File "C:/AMDDesignTools/2026.1/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv" Line 18699
+run: Time (s): cpu = 00:00:02 ; elapsed = 00:00:09 . Memory (MB): peak = 2040.691 ; gain = 0.000
