@@ -66,7 +66,7 @@ class alu_scoreboard extends uvm_scoreboard;
     function automatic logic [31:0] predict_sra(
         logic [31:0] a, b
     );
-        return $signed(a) >> b[4:0];
+        return $signed(a) >>> b[4:0];
     endfunction
 
     function automatic logic [31:0] predict_slt(
