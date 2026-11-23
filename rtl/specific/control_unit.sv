@@ -16,11 +16,13 @@ module control_unit (control_unit_if.DUT control_unitif);
                 control_unitif.we = 1'b0; control_unitif.sz = 1'b0; control_unitif.num_bytes = 2'b00;
                 case(funct7)
                     7'd1: begin // multiply
-                        control_unitif.regmux = 3'b101;
+                        control_unitif.regmux = 3'b100;
                         control_unitif.mul_sel = funct3;
+                        control_unitif.alu_sel = 4'd0;
                     end
                     default: begin // alu
                         control_unitif.regmux = 3'b001;
+                        control_unitif.mul_sel = 3'd0;
                         case(funct3)
                             3'd0: begin
                                 case(funct7)
@@ -122,10 +124,10 @@ module control_unit (control_unit_if.DUT control_unitif);
                 case(funct3)
                     3'd0: control_unitif.alu_sel = 4'b1010;
                     3'd1: control_unitif.alu_sel = 4'b1011;
-                    3'd4: control_unitif.alu_sel = 4'b1000;
-                    3'd5: control_unitif.alu_sel = 4'b1100;
-                    3'd6: control_unitif.alu_sel = 4'b1001;
-                    3'd7: control_unitif.alu_sel = 4'b1101;
+                    3'd4: control_unitif.alu_sel = 4'b1100;
+                    3'd5: control_unitif.alu_sel = 4'b1101;
+                    3'd6: control_unitif.alu_sel = 4'b1110;
+                    3'd7: control_unitif.alu_sel = 4'b1111;
                     default: control_unitif.alu_sel = 4'b0000;
                 endcase
 
