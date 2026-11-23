@@ -45,14 +45,14 @@ uvm_test_top               control_unit_test        -     @343
 ---------------------------------------------------------------
 
 UVM_INFO C:/AMDDesignTools/2026.1/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(20867) @ 0: reporter [UVM/COMP/NAMECHECK] This implementation of the component name checks requires DPI to be enabled
-UVM_ERROR ../../../../../../Github/RiscV-SoC/tb/control/control_unit_scoreboard.svh(246) @ 10000: uvm_test_top.m_top_env.m_scoreboard [CONTROL_ERROR] Opcode 0000000 not specified in truth table
+UVM_ERROR ../../../../../../Github/RiscV-SoC/tb/control/control_unit_scoreboard.svh(292) @ 10000: uvm_test_top.m_top_env.m_scoreboard [CONTROL_ERROR] Opcode 0000000 not specified in truth table
 INFO: [USF-XSim-96] XSim completed. Design snapshot 'control_unit_tb_top_behav' loaded.
 INFO: [USF-XSim-97] XSim simulation ran for 1000ns
-launch_simulation: Time (s): cpu = 00:00:03 ; elapsed = 00:00:40 . Memory (MB): peak = 3536.672 ; gain = 0.000
+launch_simulation: Time (s): cpu = 00:00:09 ; elapsed = 00:00:47 . Memory (MB): peak = 3074.543 ; gain = 0.000
 run all
 UVM_INFO C:/AMDDesignTools/2026.1/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(19968) @ 22021000: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
 UVM_INFO ../../../../../../Github/RiscV-SoC/tb/control/control_unit_coverage.svh(122) @ 22021000: uvm_test_top.m_top_env.m_agent.m_coverage [CONTROL_COVERAGE] Functional coverage: 87.88%
-UVM_INFO ../../../../../../Github/RiscV-SoC/tb/control/control_unit_scoreboard.svh(264) @ 22021000: uvm_test_top.m_top_env.m_scoreboard [CONTROL_UNIT_SUMMARY] Checks: 1101, mismatches: 0
+UVM_INFO ../../../../../../Github/RiscV-SoC/tb/control/control_unit_scoreboard.svh(315) @ 22021000: uvm_test_top.m_top_env.m_scoreboard [CONTROL_UNIT_SUMMARY] Checks: 1100, mismatches: 0
 UVM_INFO C:/AMDDesignTools/2026.1/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(13673) @ 22021000: reporter [UVM/REPORT/SERVER] 
 --- UVM Report Summary ---
 
