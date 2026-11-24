@@ -3,6 +3,9 @@ module sram (sram_if.DUT sramif);
     reg [7:0] memory [0:2047];
     reg sign_bit;
 
+    initial begin
+        $readmemh("C:/Users/jance/Documents/Github/RiscV-SoC/tb/programs/cpu_test_reg_op.hex", memory, 8'd0);
+    end
 
     always_comb begin
         for(integer i = 0; i < 4; ++i) begin

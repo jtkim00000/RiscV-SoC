@@ -7,15 +7,22 @@ module register_file(register_file_if rfif);
     end
 
     always_comb begin
-        if(rfif.rs1_addr == rfif.write_addr && rfif.write_enable && rfif.write_addr != 5'd0)
-            rfif.rs1 = rfif.write_data;
-        else
-            rfif.rs1 = (rfif.rs1_addr == 5'd0) ? 32'd0 : register_file[rfif.rs1_addr];
-        
-        if(rfif.rs2_addr == rfif.write_addr && rfif.write_enable && rfif.write_addr != 5'd0)
-            rfif.rs2 = rfif.write_data;
-        else
-            rfif.rs2 = (rfif.rs2_addr == 5'd0) ? 32'd0 : register_file[rfif.rs2_addr];
+        rfif.rs1 = (rfif.rs1_addr == 5'd0) ? 32'd0 : register_file[rfif.rs1_addr];
+
+        rfif.rs2 = (rfif.rs2_addr == 5'd0) ? 32'd0 : register_file[rfif.rs2_addr];
     end
+
+    // Forwarding for pipeline
+    // always_comb begin
+    //     if(rfif.rs1_addr == rfif.write_addr && rfif.write_enable && rfif.write_addr != 5'd0)
+    //         rfif.rs1 = rfif.write_data;
+    //     else
+    //         rfif.rs1 = (rfif.rs1_addr == 5'd0) ? 32'd0 : register_file[rfif.rs1_addr];
+        
+    //     if(rfif.rs2_addr == rfif.write_addr && rfif.write_enable && rfif.write_addr != 5'd0)
+    //         rfif.rs2 = rfif.write_data;
+    //     else
+    //         rfif.rs2 = (rfif.rs2_addr == 5'd0) ? 32'd0 : register_file[rfif.rs2_addr];
+    // end
 
 endmodule : register_file
