@@ -2,15 +2,14 @@
 
 module Jump;
 
-    reg clk;
-    reg reset;
+    logic clk;
+    logic reset;
 
-    reg [31:0] expected [0:31];
-    integer i;
-    integer errors;
+    logic [31:0] expected [0:31];
+    int unsigned i;
+    int unsigned errors;
 
     initial begin
-        expected[0] = 32'h00000000;
         expected[1] = 32'h0000000C;
         expected[2] = 32'h00000014;
     end
@@ -22,7 +21,7 @@ module Jump;
     initial begin
         clk = 1'b0;
 
-        $dumpfile("sim/jump.vcd");
+        $dumpfile("jump.vcd");
         $dumpvars(1, Jump);
 
         reset = 1'b1;
@@ -32,16 +31,17 @@ module Jump;
         reset = 1'b0;
 
         repeat(10) @(posedge clk);
+        @(negedge clk);
 
         errors = 0;
 
         for (i = 0; i < 3; i = i + 1) begin
-            if (test_cpu.register_file.register[i] !== expected[i]) begin
+            if (i != 0 && test_cpu.register_file.register_file[i] !== expected[i]) begin
                 errors = errors + 1;
                 $display("FAIL AT R%0d: expected %08h, got %08h",
                         i,
                         expected[i],
-                        test_cpu.register_file.register[i]);
+                        test_cpu.register_file.register_file[i]);
             end
         end
 
@@ -54,4 +54,4 @@ module Jump;
 
     end
 
-endmodule
+endmodule : Jump

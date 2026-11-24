@@ -2,15 +2,14 @@
 
 module LUI;
 
-    reg clk;
-    reg reset;
+    logic clk;
+    logic reset;
 
-    reg [31:0] expected [0:31];
-    integer i;
-    integer errors;
+    logic [31:0] expected [0:31];
+    int unsigned i;
+    int unsigned errors;
 
     initial begin
-        expected[0] = 32'h00000000;
         expected[1] = 32'h00001000;
         expected[2] = 32'h00002000;
         expected[3] = 32'h00003000;
@@ -29,7 +28,7 @@ module LUI;
     initial begin
         clk = 1'b0;
 
-        $dumpfile("sim/lui.vcd");
+        $dumpfile("lui.vcd");
         $dumpvars(1, LUI);
 
         reset = 1'b1;
@@ -43,12 +42,12 @@ module LUI;
         errors = 0;
 
         for (i = 0; i < 10; i = i + 1) begin
-            if (test_cpu.register_file.register[i] !== expected[i]) begin
+            if (i != 0 && test_cpu.register_file.register_file[i] !== expected[i]) begin
                 errors = errors + 1;
                 $display("FAIL AT R%0d: expected %08h, got %08h",
                         i,
                         expected[i],
-                        test_cpu.register_file.register[i]);
+                        test_cpu.register_file.register_file[i]);
             end
         end
 
@@ -61,4 +60,4 @@ module LUI;
 
     end
 
-endmodule
+endmodule : LUI
