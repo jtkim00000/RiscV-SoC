@@ -47,7 +47,7 @@ uvm_test_top               sram_test               -     @343
 UVM_INFO C:/AMDDesignTools/2026.1/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(20867) @ 0: reporter [UVM/COMP/NAMECHECK] This implementation of the component name checks requires DPI to be enabled
 INFO: [USF-XSim-96] XSim completed. Design snapshot 'sram_tb_top_behav' loaded.
 INFO: [USF-XSim-97] XSim simulation ran for 1000ns
-launch_simulation: Time (s): cpu = 00:00:02 ; elapsed = 00:00:41 . Memory (MB): peak = 3441.266 ; gain = 0.000
+launch_simulation: Time (s): cpu = 00:00:06 ; elapsed = 00:00:41 . Memory (MB): peak = 5529.836 ; gain = 0.000
 run all
 UVM_INFO C:/AMDDesignTools/2026.1/Vivado/data/system_verilog/uvm_1.2/xlnx_uvm_package.sv(19968) @ 2011000: reporter [TEST_DONE] 'run' phase is ready to proceed to the 'extract' phase
 UVM_INFO ../../../../../../Github/RiscV-SoC/tb/sram/sram_scoreboard.svh(87) @ 2011000: uvm_test_top.m_top_env.m_scoreboard [sram_SUMMARY] Checks: 101, mismatches: 0
