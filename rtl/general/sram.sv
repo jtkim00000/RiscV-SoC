@@ -1,4 +1,11 @@
-module sram (sram_if.DUT sramif);
+module sram #(
+    parameter string INIT_FILE0 = "",
+    parameter string INIT_FILE1 = "",
+    parameter string INIT_FILE2 = "",
+    parameter string INIT_FILE3 = ""
+) (
+    sram_if.DUT sramif
+);
 
     logic [8:0] bank_addr [0:3];
     logic [3:0] bank_write_enable;
@@ -6,8 +13,15 @@ module sram (sram_if.DUT sramif);
     logic [7:0] bank_read_data  [0:3];
 
     for (genvar bank = 0; bank < 4; bank++) begin : g_bank
+        localparam string BANK_FILE =
+            (bank == 0) ? INIT_FILE0 :
+            (bank == 1) ? INIT_FILE1 :
+            (bank == 2) ? INIT_FILE2 :
+                        INIT_FILE3;
+
         byte_ram #(
-            .DEPTH(512)
+            .DEPTH     (512),
+            .INIT_FILE (BANK_FILE)
         ) ram (
             .clk          (sramif.clk),
             .write_enable (bank_write_enable[bank]),

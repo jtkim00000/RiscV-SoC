@@ -3,6 +3,7 @@ interface register_file_if(input logic clk);
     logic write_enable;
     logic [4:0] rs1_addr, rs2_addr, write_addr;
     logic [31:0] write_data, rs1, rs2;
+    logic [31:0] debug_x1;
 
     clocking register_file_cb @(posedge clk);
         default input #1step output #0;
@@ -15,7 +16,7 @@ interface register_file_if(input logic clk);
 
     modport DUT (
         input clk, write_enable, rs1_addr, rs2_addr, write_addr, write_data, 
-        output rs1, rs2
+        output rs1, rs2, debug_x1
     );
 
     clocking register_file_cbm @(posedge clk);

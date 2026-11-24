@@ -1,6 +1,8 @@
 module register_file(register_file_if rfif);
     logic [31:0] register_file [0:31];
 
+    assign rfif.debug_x1 = register_file[1];
+
     always_ff @(posedge rfif.clk) begin
         if(rfif.write_enable && (rfif.write_addr != 5'd0))
             register_file[rfif.write_addr] <= rfif.write_data;
