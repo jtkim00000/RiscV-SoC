@@ -64,14 +64,7 @@ module cpu (input bit clk, input bit reset, output logic [7:0] debug_led);
 
     pc program_counter (program_counter_if.DUT);
     
-    sram #(
-        .INIT_FILE0("C:/Users/jance/Documents/Github/RiscV-SoC/tb/programs/cpu_led_counter_bank0.hex"),
-        .INIT_FILE1("C:/Users/jance/Documents/Github/RiscV-SoC/tb/programs/cpu_led_counter_bank1.hex"),
-        .INIT_FILE2("C:/Users/jance/Documents/Github/RiscV-SoC/tb/programs/cpu_led_counter_bank2.hex"),
-        .INIT_FILE3("C:/Users/jance/Documents/Github/RiscV-SoC/tb/programs/cpu_led_counter_bank3.hex")
-    ) instruction_memory (
-        instruction_memory_if.DUT
-    );
+    sram instruction_memory (instruction_memory_if.DUT);
 
     sram data_memory (data_memory_if.DUT);
 
