@@ -21,6 +21,7 @@ module bcd_anode (
             2'b01: anode = 4'b1101;
             2'b10: anode = 4'b1011;
             2'b11: anode = 4'b0111;
+            default: anode = 4'b1111; 
         endcase
     end
 

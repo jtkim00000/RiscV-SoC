@@ -1,6 +1,7 @@
 module clock_counter (
     input logic clk,
     input logic reset,
+    input logic enable,
     output logic [3:0] digit0,
     output logic [3:0] digit1,
     output logic [3:0] digit2,
@@ -39,7 +40,7 @@ module clock_counter (
             digit_6 <= 4'd0;
             digit_7 <= 4'd0;
         end
-        else begin
+        else if (enable) begin
             if(digit_0 == 4'd9) begin
                 digit_0 <= 4'd0;
                 if(digit_1 == 4'd9) begin
