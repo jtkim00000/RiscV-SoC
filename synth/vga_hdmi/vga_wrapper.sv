@@ -15,9 +15,13 @@ module vga_wrapper(
 	logic [7:0] red, green, blue;
 	logic [9:0] x_pix, y_pix;
 
-    assign red = video_active ? x_pix[7:0] : 8'h00;
-    assign blue = video_active ? (y_pix[7:0] - x_pix[7:0]) : 8'h00;
-    assign green = video_active ? (y_pix[7:0] + x_pix[7:0]) : 8'h00;
+    // assign red = video_active ? x_pix[7:0] : 8'h00;
+    // assign blue = video_active ? (y_pix[7:0] - x_pix[7:0]) : 8'h00;
+    // assign green = video_active ? (y_pix[7:0] + x_pix[7:0]) : 8'h00;
+
+	assign red = video_active ? 8'hFF : 8'h00;
+    assign blue = video_active ? 8'hFF : 8'h00;
+    assign green = video_active ? 8'hFF : 8'h00;
 
 	vga_sync vga (
 		.clk(clk_25MHz),

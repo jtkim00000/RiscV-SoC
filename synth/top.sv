@@ -120,7 +120,7 @@ module top (
     end
 
     vga_wrapper vga (
-        .clk_25MHz(clk_25MHz),
+        .clk_25MHz(clk_25MHz),  
         .clk_125MHz(clk_125MHz),
         .clock_locked(clock_locked),
         .reset(video_reset_pipe[1]),
